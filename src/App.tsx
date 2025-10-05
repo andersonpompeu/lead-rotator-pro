@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LeadProvider } from "./contexts/LeadContext";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
-import ServicePage from "./pages/ServicePage";
+import ServiceTemplate from "./pages/ServiceTemplate";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,7 +21,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/servicos/conserto-geladeira" element={<ServicePage />} />
+            <Route path="/servicos/:slug" element={<ServiceTemplate />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
