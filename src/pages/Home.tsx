@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
+import { ServiceBlogCards } from '@/components/ServiceBlogCards';
 import { HowItWorks } from '@/components/HowItWorks';
 import { WhyChooseUs } from '@/components/WhyChooseUs';
 import { Testimonials } from '@/components/Testimonials';
@@ -16,6 +17,7 @@ const Home = () => {
       <Header />
       <Hero />
       <Services />
+      <ServiceBlogCards />
       <HowItWorks />
       <WhyChooseUs />
       <Testimonials />
