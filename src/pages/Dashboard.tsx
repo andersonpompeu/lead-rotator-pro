@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { ProfessionalsManagement } from '@/components/dashboard/ProfessionalsManagement';
 import { LeadsHistory } from '@/components/dashboard/LeadsHistory';
 import { MetricsChart } from '@/components/dashboard/MetricsChart';
+import { ServiceContentManagement } from '@/components/dashboard/ServiceContentManagement';
 
 const Dashboard = () => {
   const { professionals, leads, currentRotationIndex, resetRotation } = useLeads();
@@ -118,6 +119,7 @@ const Dashboard = () => {
             <TabsTrigger value="professionals">Profissionais</TabsTrigger>
             <TabsTrigger value="leads">Histórico de Leads</TabsTrigger>
             <TabsTrigger value="metrics">Métricas</TabsTrigger>
+            <TabsTrigger value="content">Conteúdo SEO</TabsTrigger>
           </TabsList>
 
           <TabsContent value="professionals">
@@ -130,6 +132,10 @@ const Dashboard = () => {
 
           <TabsContent value="metrics">
             <MetricsChart />
+          </TabsContent>
+
+          <TabsContent value="content">
+            <ServiceContentManagement />
           </TabsContent>
         </Tabs>
       </main>

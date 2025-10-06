@@ -5,11 +5,12 @@ import { ServiceSidebar } from '@/components/ServiceSidebar';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Phone } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { serviceData } from '@/data/serviceContent';
+import { useServiceContent } from '@/contexts/ServiceContentContext';
 import { Helmet } from 'react-helmet';
 
 const ServiceTemplate = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { serviceData } = useServiceContent();
   const service = serviceData[slug as keyof typeof serviceData];
 
   if (!service) {
@@ -71,11 +72,10 @@ const ServiceTemplate = () => {
 
                 <section>
                   <h2 className="text-2xl font-bold mb-4">Sobre o Serviço de {service.service}</h2>
-                  <div className="prose max-w-none text-muted-foreground space-y-4">
-                    {service.description.split('\n\n').map((paragraph, i) => (
-                      <p key={i}>{paragraph}</p>
-                    ))}
-                  </div>
+                  <div 
+                    className="prose max-w-none text-muted-foreground"
+                    dangerouslySetInnerHTML={{ __html: service.description }}
+                  />
                 </section>
 
                 <section className="bg-accent/30 p-6 rounded-lg">
