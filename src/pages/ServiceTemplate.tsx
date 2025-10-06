@@ -22,18 +22,91 @@ const ServiceTemplate = () => {
     window.location.href = '/#contact-form';
   };
 
-  const schemaData = {
+  const currentUrl = `https://www.assisttech.com.br/servicos/${slug}`;
+  
+  const schemaLocalBusiness = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": `${currentUrl}#localbusiness`,
     "name": `AssistTech - ${service.service}`,
     "description": service.metaDescription,
+    "url": currentUrl,
     "telephone": "+5511999887766",
     "priceRange": service.priceFrom,
+    "image": "https://lovable.dev/opengraph-image-p98pqg.png",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "Av. Paulista, 1000",
       "addressLocality": "São Paulo",
       "addressRegion": "SP",
+      "postalCode": "01310-100",
       "addressCountry": "BR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-23.5505",
+      "longitude": "-46.6333"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "São Paulo"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "500"
+    }
+  };
+
+  const schemaFAQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": service.faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  const schemaBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Início",
+        "item": "https://www.assisttech.com.br/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": service.service,
+        "item": currentUrl
+      }
+    ]
+  };
+
+  const schemaService = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": `Conserto de ${service.service}`,
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "AssistTech",
+      "telephone": "+5511999887766"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "São Paulo"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": service.priceFrom.replace('R$ ', ''),
+      "priceCurrency": "BRL"
     }
   };
 
@@ -42,7 +115,26 @@ const ServiceTemplate = () => {
       <Helmet>
         <title>{service.title}</title>
         <meta name="description" content={service.metaDescription} />
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
+        <link rel="canonical" href={currentUrl} />
+        
+        <meta name="geo.region" content="BR-SP" />
+        <meta name="geo.placename" content="São Paulo" />
+        
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={currentUrl} />
+        <meta property="og:title" content={service.title} />
+        <meta property="og:description" content={service.metaDescription} />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:site_name" content="AssistTech" />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={service.title} />
+        <meta name="twitter:description" content={service.metaDescription} />
+        
+        <script type="application/ld+json">{JSON.stringify(schemaLocalBusiness)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaFAQ)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaBreadcrumb)}</script>
+        <script type="application/ld+json">{JSON.stringify(schemaService)}</script>
       </Helmet>
 
       <div className="min-h-screen">

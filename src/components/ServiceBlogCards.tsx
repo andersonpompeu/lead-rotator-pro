@@ -83,8 +83,9 @@ export const ServiceBlogCards = () => {
               <div className="aspect-video overflow-hidden">
                 <img
                   src={post.image}
-                  alt={post.title}
+                  alt={`Serviço de ${post.title} em São Paulo - Técnico especializado`}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  loading="lazy"
                 />
               </div>
               <div className="p-6">

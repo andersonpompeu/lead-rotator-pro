@@ -1,14 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+
+Sitemap: https://www.assisttech.com.br/sitemap.xml
+
+# Bots específicos
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: Twitterbot
-Allow: /
-
 User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
 Allow: /
