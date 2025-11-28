@@ -1,17 +1,40 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import { useLeads } from '@/contexts/LeadContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, TrendingUp, Clock, CheckCircle, RotateCcw, Home } from 'lucide-react';
+import { Users, TrendingUp, Clock, CheckCircle, RotateCcw, Home, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ProfessionalsManagement } from '@/components/dashboard/ProfessionalsManagement';
 import { LeadsHistory } from '@/components/dashboard/LeadsHistory';
 import { MetricsChart } from '@/components/dashboard/MetricsChart';
 import { ServiceContentManagement } from '@/components/dashboard/ServiceContentManagement';
+import { Loader2 } from 'lucide-react';
 
 const Dashboard = () => {
+  const { user, isAdmin, loading, signOut } = useAuth();
+  const navigate = useNavigate();
   const { professionals, leads, currentRotationIndex, resetRotation } = useLeads();
+
+  useEffect(() => {
+    if (!loading && (!user || !isAdmin)) {
+      navigate('/auth');
+    }
+  }, [user, isAdmin, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
+    return null;
+  }
 
   const activeProfessionals = professionals.filter(p => p.ativo);
   const todayLeads = leads.filter(l => {
@@ -35,12 +58,18 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-foreground">Dashboard Administrativo</h1>
-            <Link to="/">
-              <Button variant="outline">
-                <Home className="h-4 w-4 mr-2" />
-                Voltar ao Site
+            <div className="flex gap-2">
+              <Link to="/">
+                <Button variant="outline">
+                  <Home className="h-4 w-4 mr-2" />
+                  Voltar ao Site
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={signOut}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Sair
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
       </header>
