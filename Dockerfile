@@ -1,31 +1,36 @@
-# Build stage
+# ============================
+# BUILD STAGE
+# ============================
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
+# Copy only package files first
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Install dependencies (lockfile is required)
+RUN npm install
 
-# Copy source code
+# Copy the rest of the project
 COPY . .
 
-# Build the application
+# Build the Vite project
 RUN npm run build
 
-# Production stage
+# ============================
+# RUN STAGE
+# ============================
 FROM nginx:alpine
+
+# Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration
+# Copy your custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port
 EXPOSE 80
 
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
