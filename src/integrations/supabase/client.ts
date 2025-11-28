@@ -1,10 +1,22 @@
-/// <reference types="vite/client" />
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from './types';
 
-interface ImportMetaEnv {
-  readonly VITE_SUPABASE_URL: string
-  readonly VITE_SUPABASE_PUBLISHABLE_KEY: string
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+// Validação para ambiente de desenvolvimento
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  console.error('Missing Supabase environment variables');
 }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv
-}
+export const supabase = createClient<Database>(
+  SUPABASE_URL || '',
+  SUPABASE_PUBLISHABLE_KEY || '',
+  {
+    auth: {
+      storage: localStorage,
+      persistSession: true,
+      autoRefreshToken: true,
+    }
+  }
+);
